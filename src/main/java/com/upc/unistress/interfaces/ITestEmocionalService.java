@@ -11,4 +11,6 @@ public interface ITestEmocionalService {
     TestEmocionalDTO listId(Long id);
     List<TestEmocionalDTO> listarPorUsuario(Long usuarioId);
     List<TestEmocionalDTO> listarPorRangoFechas(LocalDate inicio, LocalDate fin);
+
+    TestEmocionalDTO resolver(TestEmocionalDTO dto);
 }

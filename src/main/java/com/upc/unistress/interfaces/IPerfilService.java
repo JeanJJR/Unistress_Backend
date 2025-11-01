@@ -1,6 +1,8 @@
 package com.upc.unistress.interfaces;
 
 import com.upc.unistress.dtos.PerfilDTO;
+import com.upc.unistress.dtos.PerfilDetalleDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +26,22 @@ public interface IPerfilService {
 
     // Listar perfiles por tipo (ESTUDIANTE, PSICOLOGO)
     List<PerfilDTO> listarPorTipoPerfil(String tipoPerfil);
+    // Actualizar la foto de perfil (recibe la URL o ruta)
+    void actualizarFoto(Long perfilId, String fotoUrl);
+
+    // Subir foto de perfil (archivo real)
+    void actualizarFoto(Long perfilId, MultipartFile archivo);
+
+    PerfilDetalleDTO obtenerPerfilPorUsuario(int usuarioId);
+
+    void actualizarPerfil(int usuarioId, PerfilDetalleDTO dto);
+
+
+
+
+
+
+
+
+
 }

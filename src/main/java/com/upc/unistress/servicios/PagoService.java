@@ -4,15 +4,20 @@ import com.upc.unistress.dtos.PagoDTO;
 import com.upc.unistress.entidades.MetodoPago;
 import com.upc.unistress.entidades.Pago;
 import com.upc.unistress.entidades.Suscripcion;
+import com.upc.unistress.entidades.Usuario;
 import com.upc.unistress.interfaces.IPagoService;
 import com.upc.unistress.repositorios.MetodoPagoRepository;
 import com.upc.unistress.repositorios.PagoRepository;
 import com.upc.unistress.repositorios.SuscripcionRepository;
+import com.upc.unistress.repositorios.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PagoService implements IPagoService {
@@ -25,6 +30,8 @@ public class PagoService implements IPagoService {
 
     @Autowired
     private MetodoPagoRepository metodoPagoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -91,4 +98,5 @@ public class PagoService implements IPagoService {
                 })
                 .toList();
     }
+
 }

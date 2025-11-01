@@ -23,4 +23,5 @@ public interface INotificacionService {
 
     // Buscar por ID
     NotificacionDTO listId(Long id);
+
 }

@@ -6,13 +6,17 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/metodos-pago")
+@CrossOrigin(origins = "http://localhost:4200",
+        allowCredentials = "true",
+        exposedHeaders = "Authorization")
+@RequestMapping("/api/metodo")
 public class MetodoPagoController {
 
     @Autowired
@@ -22,6 +26,7 @@ public class MetodoPagoController {
     private ModelMapper modelMapper;
 
     @GetMapping
+
     public ResponseEntity<List<MetodoPagoDTO>> listar() {
         List<MetodoPagoDTO> metodos = metodoPagoService.listar()
                 .stream()
@@ -31,26 +36,31 @@ public class MetodoPagoController {
     }
 
     @GetMapping("/{id}")
+
     public ResponseEntity<MetodoPagoDTO> obtenerPorId(@PathVariable Long id) {
         MetodoPagoDTO dto = metodoPagoService.listId(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
+
     public ResponseEntity<String> registrar(@RequestBody MetodoPagoDTO dto) {
         metodoPagoService.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Método de pago registrado correctamente");
     }
 
     @PutMapping
+
     public ResponseEntity<String> editar(@RequestBody MetodoPagoDTO dto) {
         metodoPagoService.insertar(dto);
         return ResponseEntity.ok("Método de pago actualizado correctamente");
     }
 
     @DeleteMapping("/{id}")
+
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         metodoPagoService.eliminar(id);
         return ResponseEntity.ok("Método de pago eliminado correctamente");
     }
+
 }

@@ -1,5 +1,7 @@
 package com.upc.unistress.interfaces;
 
+import com.upc.unistress.dtos.EstudianteDTO;
+import com.upc.unistress.dtos.PsicologoDTO;
 import com.upc.unistress.dtos.UsuarioDTO;
 import com.upc.unistress.entidades.Usuario;
 
@@ -28,4 +30,12 @@ public interface IUsuarioService {
 
     // Listar usuarios por rol (ADMIN, ESTUDIANTE, PSICOLOGO)
     List<UsuarioDTO> listarPorRol(String tipoRol);
+
+    // registrar estudiante
+    void registrarEstudiante(EstudianteDTO dto);
+
+    // registrar psicologo
+    void registrarPsicologo(PsicologoDTO psicologodto);
+
+    List<UsuarioDTO> listarPsicologosDisponibles();
 }

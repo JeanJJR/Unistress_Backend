@@ -7,6 +7,7 @@ import com.upc.unistress.repositorios.SuscripcionRepository;
 import com.upc.unistress.repositorios.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,4 +77,12 @@ public class SuscripcionService implements ISuscripcionService {
                 })
                 .toList();
     }
+    @Override
+    public List<SuscripcionDTO> listarActivas() {
+        return suscripcionRepository.findByEstado("ACTIVO")
+                .stream()
+                .map(s -> modelMapper.map(s, SuscripcionDTO.class))
+                .toList();
+    }
+
 }

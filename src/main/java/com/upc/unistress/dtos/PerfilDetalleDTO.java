@@ -1,23 +1,31 @@
 package com.upc.unistress.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PerfilCompletoDTO {
-    private Long idUsuario;
+public class PerfilDetalleDTO {
+    private Long usuarioId;
     private String nombre;
     private String apellidos;
     private String correo;
-    private String contrasena;  // NO SE DEVUELVE
+    private String contraseña;
     private String telefono;
-    private String rol;
-    private PerfilDTO perfil;   // academico o profesional
-    private SuscripcionDTO suscripcion;    // PREMIUM, FREE, o null si es psiclogo
-}
 
+    private String tipoPerfil; // ESTUDIANTE o PSICOLOGO
+    private String universidad;
+    private String carrera;
+    private String ciclo;
+    private String estadoAcademico;
+    private String especialidad;
+    private String colegiatura;
+    private Integer añosExperiencia;
+    private String telefonoConsulta;
+    private String fotoUrl;
+    private String descripcion;
+
+}

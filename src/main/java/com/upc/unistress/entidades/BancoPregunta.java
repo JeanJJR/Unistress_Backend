@@ -21,14 +21,6 @@ public class BancoPregunta implements Serializable {
     private String enunciado;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id", nullable = false)
-    private CategoriaPregunta categoria;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nivel_id", nullable = false)
-    private NivelPregunta nivel;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "psicologo_id", nullable = false)
     private Usuario psicologo; // El que creó la pregunta
 }

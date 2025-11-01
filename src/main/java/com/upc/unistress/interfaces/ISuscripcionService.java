@@ -10,4 +10,6 @@ public interface ISuscripcionService {
     void eliminar(Long id);
     SuscripcionDTO listId(Long id);
     List<SuscripcionDTO> listarPorUsuario(Long usuarioId);
+    List<SuscripcionDTO> listarActivas();
+
 }

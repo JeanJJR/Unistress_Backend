@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PagoRepository extends JpaRepository<Pago, Long> {
     List<Pago> findBySuscripcion_Id(Long suscripcionId);
+
 }

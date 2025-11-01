@@ -10,4 +10,6 @@ public interface IPagoService {
     void eliminar(Long id);
     PagoDTO listId(Long id);
     List<PagoDTO> listarPorSuscripcion(Long suscripcionId);
+    // Registrar un pago por estudiante autenticado
+
 }

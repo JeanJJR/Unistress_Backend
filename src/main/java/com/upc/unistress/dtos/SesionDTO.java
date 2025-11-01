@@ -19,4 +19,6 @@ public class SesionDTO {
     private LocalDate fecha;
     private LocalTime hora;
     private String observaciones;
+    private String mensaje;
+    private String estado;
 }

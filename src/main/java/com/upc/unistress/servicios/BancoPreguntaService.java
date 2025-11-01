@@ -2,16 +2,13 @@ package com.upc.unistress.servicios;
 
 import com.upc.unistress.dtos.BancoPreguntaDTO;
 import com.upc.unistress.entidades.BancoPregunta;
-import com.upc.unistress.entidades.CategoriaPregunta;
-import com.upc.unistress.entidades.NivelPregunta;
 import com.upc.unistress.entidades.Usuario;
 import com.upc.unistress.interfaces.IBancoPreguntaService;
 import com.upc.unistress.repositorios.BancoPreguntaRepository;
-import com.upc.unistress.repositorios.CategoriaPreguntaRepository;
-import com.upc.unistress.repositorios.NivelPreguntaRepository;
 import com.upc.unistress.repositorios.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +19,7 @@ public class BancoPreguntaService implements IBancoPreguntaService {
     @Autowired
     private BancoPreguntaRepository repository;
 
-    @Autowired
-    private CategoriaPreguntaRepository categoriaRepository;
 
-    @Autowired
-    private NivelPreguntaRepository nivelRepository;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -36,24 +29,39 @@ public class BancoPreguntaService implements IBancoPreguntaService {
 
     @Override
     public void insertar(BancoPreguntaDTO dto) {
+        // Obtener el email (username) del usuario autenticado
+        String correo = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Buscar al usuario autenticado
+        Usuario psicologo = usuarioRepository.findByCorreo(correo)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Validar que tenga rol de psicólogo
+        if (!"ROLE_PSICOLOGO".equalsIgnoreCase(psicologo.getRol().getTipoRol())) {
+            throw new RuntimeException("Solo los psicólogos pueden crear preguntas.");
+        }
+
+        // Crear y guardar la pregunta
         BancoPregunta pregunta = new BancoPregunta();
-
         pregunta.setEnunciado(dto.getEnunciado());
-
-        CategoriaPregunta categoria = categoriaRepository.findById(dto.getCategoriaId())
-                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        pregunta.setCategoria(categoria);
-
-        NivelPregunta nivel = nivelRepository.findById(dto.getNivelId())
-                .orElseThrow(() -> new RuntimeException("Nivel no encontrado"));
-        pregunta.setNivel(nivel);
-
-        Usuario psicologo = usuarioRepository.findById(dto.getPsicologoId())
-                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
-        pregunta.setPsicologo(psicologo);
+        pregunta.setPsicologo(psicologo); //Asigna el usuario autenticado
 
         repository.save(pregunta);
     }
+
+    @Override
+    public void actualizar(Long id, BancoPreguntaDTO dto) {
+        BancoPregunta pregunta = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pregunta no encontrada"));
+
+        pregunta.setEnunciado(dto.getEnunciado());
+
+        repository.save(pregunta);
+    }
+
+
+
+
 
     @Override
     public List<BancoPreguntaDTO> listar() {
@@ -75,21 +83,9 @@ public class BancoPreguntaService implements IBancoPreguntaService {
                 .orElseThrow(() -> new RuntimeException("Pregunta con ID " + id + " no encontrada"));
     }
 
-    @Override
-    public List<BancoPreguntaDTO> listarPorCategoria(Long categoriaId) {
-        return repository.findByCategoria_Id(categoriaId)
-                .stream()
-                .map(p -> modelMapper.map(p, BancoPreguntaDTO.class))
-                .toList();
-    }
 
-    @Override
-    public List<BancoPreguntaDTO> listarPorNivel(Long nivelId) {
-        return repository.findByNivel_Id(nivelId)
-                .stream()
-                .map(p -> modelMapper.map(p, BancoPreguntaDTO.class))
-                .toList();
-    }
+
+
 
     @Override
     public List<BancoPreguntaDTO> listarPorPsicologo(Long psicologoId) {
@@ -98,4 +94,5 @@ public class BancoPreguntaService implements IBancoPreguntaService {
                 .map(p -> modelMapper.map(p, BancoPreguntaDTO.class))
                 .toList();
     }
+
 }

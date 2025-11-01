@@ -9,4 +9,5 @@ import java.util.List;
 public interface TestEmocionalRepository extends JpaRepository<TestEmocional, Long> {
     List<TestEmocional> findByUsuario_Id(Long usuarioId);
     List<TestEmocional> findByFechaBetween(LocalDate inicio, LocalDate fin);
+    List<TestEmocional> findByUsuario_IdOrderByFechaDesc(Long usuarioId);
 }

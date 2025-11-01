@@ -11,4 +11,7 @@ public interface IRegistroEmocionalService {
     RegistroEmocionalDTO listId(Long id);
     List<RegistroEmocionalDTO> listarPorUsuario(Long usuarioId);
     List<RegistroEmocionalDTO> listarPorRangoFechas(LocalDateTime inicio, LocalDateTime fin);
+
+
+
 }

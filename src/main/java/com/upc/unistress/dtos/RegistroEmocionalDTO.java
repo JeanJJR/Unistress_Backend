@@ -13,5 +13,4 @@ public class RegistroEmocionalDTO {
     private String emocion;
     private Integer nivel;
     private String descripcion;
-    private LocalDateTime fechaRegistro;
 }
