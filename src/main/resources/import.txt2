@@ -1,0 +1,18 @@
+-- =======================
+-- INSERCIÓN DE ROLES
+-- =======================
+INSERT INTO rol (tipo_rol) VALUES ('ROLE_ADMIN');     -- id = 1
+INSERT INTO rol (tipo_rol) VALUES ('ROLE_ESTUDIANTE'); -- id = 2
+INSERT INTO rol (tipo_rol) VALUES ('ROLE_PSICOLOGO');  -- id = 3
+
+-- =======================
+-- INSERCIÓN DE USUARIOS
+-- =======================
+INSERT INTO usuario (nombre, apellidos, correo, contraseña, telefono, rol_id)
+VALUES ('Admin', 'General', 'admin@upc.edu.pe', '$2a$12$plgw.ii4HUxdEEekZXJKr.mCBNDxgDIt30QXhkLHjkVYb/DT0T/cS', '999999999', 1);
+
+INSERT INTO usuario (nombre, apellidos, correo, contraseña, telefono, rol_id)
+VALUES ('Carlos', 'Pérez', 'carlos@upc.edu.pe', '$2a$12$plgw.ii4HUxdEEekZXJKr.mCBNDxgDIt30QXhkLHjkVYb/DT0T/cS', '987654321', 2);
+
+INSERT INTO usuario (nombre, apellidos, correo, contraseña, telefono, rol_id)
+VALUES ('Lucía', 'Ramírez', 'lucia.psico@upc.edu.pe', '$2a$12$plgw.ii4HUxdEEekZXJKr.mCBNDxgDIt30QXhkLHjkVYb/DT0T/cS', '912345678', 3);
