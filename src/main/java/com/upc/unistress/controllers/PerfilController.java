@@ -77,6 +77,7 @@ public class PerfilController {
         List<PerfilDTO> perfiles = perfilService.listarPorTipoPerfil(tipoPerfil);
         return ResponseEntity.ok(perfiles);
     }
+    /*
     // Subir foto (en este ejemplo, recibimos solo la URL)
     @PutMapping("/{perfilId}/foto")
 
@@ -84,6 +85,8 @@ public class PerfilController {
         perfilService.actualizarFoto(perfilId, fotoUrl);
         return ResponseEntity.ok("Foto de perfil actualizada correctamente");
     }
+*/
+    /*
     ///  subir foto reales eso ya lo vere si lo aplico o no en el fronted
     @PutMapping("/{id}/foto")
 
@@ -93,6 +96,17 @@ public class PerfilController {
         perfilService.actualizarFoto(id, archivo);
         return ResponseEntity.ok("Foto actualizada correctamente");
     }
+    */
+    @PostMapping("/perfilusuario/{usuarioId}/foto")
+    public ResponseEntity<?> actualizarFoto(
+            @PathVariable int usuarioId,
+            @RequestParam("archivo") MultipartFile archivo) {
+        perfilService.actualizarFoto(usuarioId, archivo);
+        return ResponseEntity.ok("Foto actualizada");
+    }
+
+
+
 
     // Obtener perfil detallado por usuario
     @GetMapping("/perfilusuario/{id}")
