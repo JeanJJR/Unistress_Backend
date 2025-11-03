@@ -102,7 +102,7 @@ public class DataInitializer {
                 null, // especialidad
                 null, // colegiatura
                 null, // añosExperiencia
-                "https://example.com/foto-estudiante.jpg",
+                "https://res.cloudinary.com/dzgdttwjj/image/upload/v1762152783/m5swju7acyd2zr51sobc.jpg",
                 "Estudiante comprometido con su formación académica."
         );
         repo.save(perfil);
