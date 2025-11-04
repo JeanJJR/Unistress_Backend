@@ -119,7 +119,7 @@ public class DataInitializer {
                 "Psicología Clínica",
                 "12345-CMP",
                 5,
-                "https://example.com/foto-psicologo.jpg",
+                "https://res.cloudinary.com/dzgdttwjj/image/upload/v1762152783/m5swju7acyd2zr51sobc.jpg",
                 "Psicóloga con experiencia en terapia cognitivo-conductual."
         );
         repo.save(perfil);

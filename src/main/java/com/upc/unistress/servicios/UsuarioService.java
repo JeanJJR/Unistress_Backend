@@ -155,7 +155,7 @@ public class UsuarioService implements IUsuarioService {
         perfil.setTipoPerfil("ROLE_PSICOLOGO");
         perfil.setEspecialidad(psicologodto.getEspecialidad());
         perfil.setColegiatura(psicologodto.getColegiatura());
-        perfil.setAñosExperiencia(psicologodto.getAñosExperiencia());
+        perfil.setAnosExperiencia(psicologodto.getAñosExperiencia());
 
         perfilRepository.save(perfil);
     }

@@ -172,7 +172,7 @@ public class PerfilService implements IPerfilService {
         dto.setEstadoAcademico(perfil.getEstadoAcademico());
         dto.setEspecialidad(perfil.getEspecialidad());
         dto.setColegiatura(perfil.getColegiatura());
-        dto.setAñosExperiencia(perfil.getAñosExperiencia());
+        dto.setAnosExperiencia(perfil.getAnosExperiencia());
         dto.setFotoUrl(perfil.getFotoUrl());
 
 
@@ -242,7 +242,7 @@ public class PerfilService implements IPerfilService {
         perfil.setEstadoAcademico(dto.getEstadoAcademico());
         perfil.setEspecialidad(dto.getEspecialidad());
         perfil.setColegiatura(dto.getColegiatura());
-        perfil.setAñosExperiencia(dto.getAñosExperiencia());
+        perfil.setAnosExperiencia(dto.getAnosExperiencia());
         perfil.setDescripcion(dto.getDescripcion());
 
         perfilRepository.save(perfil);

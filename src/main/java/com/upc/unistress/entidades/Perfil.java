@@ -47,7 +47,7 @@ public class Perfil implements Serializable {
     private String colegiatura;
 
     @Column(name = "años_experiencia")
-    private Integer añosExperiencia;
+    private Integer anosExperiencia;
 
     @Column(name="foto_url")
     private String fotoUrl;
@@ -59,7 +59,7 @@ public class Perfil implements Serializable {
 
     public Perfil(Usuario usuario, String tipoPerfil, String universidad, String carrera, String ciclo,
                   String estadoAcademico, String especialidad, String colegiatura,
-                  Integer añosExperiencia, String fotoUrl, String descripcion) {
+                  Integer anosExperiencia, String fotoUrl, String descripcion) {
         this.usuario = usuario;
         this.tipoPerfil = tipoPerfil;
         this.universidad = universidad;
@@ -68,7 +68,7 @@ public class Perfil implements Serializable {
         this.estadoAcademico = estadoAcademico;
         this.especialidad = especialidad;
         this.colegiatura = colegiatura;
-        this.añosExperiencia = añosExperiencia;
+        this.anosExperiencia = anosExperiencia;
         this.fotoUrl = fotoUrl;
         this.descripcion = descripcion;
     }
