@@ -13,7 +13,7 @@ public class EstudianteDTO {
     private String nombre;
     private String apellidos;
     private String correo;
-    private String contraseña;
+    private String contrasena;
     private String telefono;
 
     // Campos propios del perfil de estudiante

@@ -13,7 +13,7 @@ public class PerfilDetalleDTO {
     private String nombre;
     private String apellidos;
     private String correo;
-    private String contraseña;
+    private String contrasena;
     private String telefono;
 
     private String tipoPerfil; // ESTUDIANTE o PSICOLOGO

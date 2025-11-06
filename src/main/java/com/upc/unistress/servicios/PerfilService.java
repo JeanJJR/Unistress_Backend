@@ -162,7 +162,7 @@ public class PerfilService implements IPerfilService {
         dto.setNombre(usuario.getNombre());
         dto.setApellidos(usuario.getApellidos());
         dto.setCorreo(usuario.getCorreo());
-        dto.setContraseña(usuario.getContraseña());
+        dto.setContrasena(usuario.getContrasena());
         dto.setTelefono(usuario.getTelefono());
 
         dto.setTipoPerfil(perfil.getTipoPerfil());
@@ -204,8 +204,8 @@ public class PerfilService implements IPerfilService {
         }
 
         // Codificar contraseña si se envía
-        if (dto.getContraseña() != null && !dto.getContraseña().isBlank()) {
-            usuario.setContraseña(passwordEncoder.encode(dto.getContraseña()));
+        if (dto.getContrasena() != null && !dto.getContrasena().isBlank()) {
+            usuario.setContrasena(passwordEncoder.encode(dto.getContrasena()));
         }
 
         // Actualizar datos básicos

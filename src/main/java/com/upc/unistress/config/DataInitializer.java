@@ -40,7 +40,7 @@ public class DataInitializer {
             admin.setNombre("Admin");
             admin.setApellidos("General");
             admin.setCorreo("admin@upc.edu.pe");
-            admin.setContraseña(passwordEncoder.encode("123456"));
+            admin.setContrasena(passwordEncoder.encode("123456"));
             admin.setTelefono("999999999");
             admin.setRol(rolAdmin);
             usuarioRepository.save(admin);
@@ -50,7 +50,7 @@ public class DataInitializer {
             carlos.setNombre("Carlos");
             carlos.setApellidos("Pérez");
             carlos.setCorreo("carlos@upc.edu.pe");
-            carlos.setContraseña(passwordEncoder.encode("123456"));
+            carlos.setContrasena(passwordEncoder.encode("123456"));
             carlos.setTelefono("987654321");
             carlos.setRol(rolEstudiante);
             usuarioRepository.save(carlos);
@@ -61,7 +61,7 @@ public class DataInitializer {
             lucia.setNombre("Lucía");
             lucia.setApellidos("Ramírez");
             lucia.setCorreo("lucia.psico@upc.edu.pe");
-            lucia.setContraseña(passwordEncoder.encode("123456"));
+            lucia.setContrasena(passwordEncoder.encode("123456"));
             lucia.setTelefono("912345678");
             lucia.setRol(rolPsicologo);
             usuarioRepository.save(lucia);

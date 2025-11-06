@@ -97,12 +97,15 @@ public class UsuarioService implements IUsuarioService {
     public void registrarEstudiante(EstudianteDTO dto) {
         Rol rol = rolRepository.findByTipoRol("ROLE_ESTUDIANTE")
                 .orElseThrow(() -> new RuntimeException("Rol ESTUDIANTE no encontrado"));
+        if (usuarioRepository.existsByCorreo(dto.getCorreo())) {
+            throw new RuntimeException("Ya existe un usuario con ese correo");
+        }
 
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
         usuario.setApellidos(dto.getApellidos());
         usuario.setCorreo(dto.getCorreo());
-        usuario.setContraseña(passwordEncoder.encode(dto.getContraseña()));
+        usuario.setContrasena(passwordEncoder.encode(dto.getContrasena()));
         usuario.setTelefono(dto.getTelefono());
         usuario.setRol(rol);
 
@@ -137,13 +140,16 @@ public class UsuarioService implements IUsuarioService {
         // Buscar el rol PSICOLOGO
         Rol rol = rolRepository.findByTipoRol("ROLE_PSICOLOGO")
                 .orElseThrow(() -> new RuntimeException("Rol PSICOLOGO no encontrado"));
+        if (usuarioRepository.existsByCorreo(psicologodto.getCorreo())) {
+            throw new RuntimeException("Ya existe un usuario con ese correo");
+        }
 
         // Crear Usuario
         Usuario usuario = new Usuario();
         usuario.setNombre(psicologodto.getNombre());
         usuario.setApellidos(psicologodto.getApellidos());
         usuario.setCorreo(psicologodto.getCorreo());
-        usuario.setContraseña(passwordEncoder.encode(psicologodto.getContraseña()));
+        usuario.setContrasena(passwordEncoder.encode(psicologodto.getContrasena()));
         usuario.setTelefono(psicologodto.getTelefono());
         usuario.setRol(rol);
 
@@ -155,7 +161,7 @@ public class UsuarioService implements IUsuarioService {
         perfil.setTipoPerfil("ROLE_PSICOLOGO");
         perfil.setEspecialidad(psicologodto.getEspecialidad());
         perfil.setColegiatura(psicologodto.getColegiatura());
-        perfil.setAnosExperiencia(psicologodto.getAñosExperiencia());
+        perfil.setAnosExperiencia(psicologodto.getAnosExperiencia());
 
         perfilRepository.save(perfil);
     }
