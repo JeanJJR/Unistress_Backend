@@ -39,9 +39,6 @@ public class Sesion implements Serializable {
     private LocalTime hora;
 
     @Column(length = 500)
-    private String observaciones;
-
-    @Column(length = 500)
     private String mensaje;
     @Column(nullable = false, length = 20)
     private String estado; // PENDIENTE, CONFIRMADA, CANCELADA
