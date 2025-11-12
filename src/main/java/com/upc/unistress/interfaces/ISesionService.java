@@ -17,6 +17,8 @@ public interface ISesionService {
 
     void editarSesion(Long id, SesionDTO dto);
 
+    void aceptarSesion(Long id);
+
     void eliminar(Long id);
 
     List<SesionDTO> listarPorFecha(LocalDate fecha);

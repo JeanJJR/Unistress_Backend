@@ -23,7 +23,6 @@ public class SesionController {
 
     // 1. Agendar sesiN
     @PostMapping
-
     public ResponseEntity<String> crear(@RequestBody SesionDTO dto) {
         sesionService.crearSesion(dto);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -81,6 +80,13 @@ public class SesionController {
         return ResponseEntity.ok(sesionService.filtrarSesionesPorRangoAutenticado(inicio, fin));
     }
 
+    // aceptar sesión
+    @PutMapping("/aceptar/{id}")
+    public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
+        sesionService.aceptarSesion(id);
+        return ResponseEntity.ok("Sesión aceptada correctamente");
+    }
+
      // si va
     // Cancelar sesión
     @PutMapping("/cancelar/{id}")
@@ -92,4 +98,6 @@ public class SesionController {
         sesionService.cancelarSesion(id, dto.getEstudianteId());
         return ResponseEntity.ok("Sesión cancelada correctamente");
     }
+
+
 }
