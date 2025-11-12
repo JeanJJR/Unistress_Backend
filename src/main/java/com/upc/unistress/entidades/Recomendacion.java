@@ -31,4 +31,8 @@ public class Recomendacion implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "registro_emocional_id")
     private RegistroEmocional registroEmocional;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 }
