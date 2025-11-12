@@ -10,6 +10,7 @@ import com.upc.unistress.repositorios.RecomendacionRepository;
 import com.upc.unistress.repositorios.RegistroEmocionalRepository;
 import com.upc.unistress.interfaces.IRecomendacionService;
 import com.upc.unistress.repositorios.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,11 +35,12 @@ public class RecomendacionService implements IRecomendacionService {
     @Autowired
     private NotificacionRepository notificacionRepository;
 
+    @Transactional
     @Override
     public void insertar(RecomendacionDTO dto) {
         Recomendacion recomendacion = modelMapper.map(dto, Recomendacion.class);
 
-        // 1️Validar y obtener el registro emocional
+        // 1. Validar y obtener el registro emocional (Vincula con el Estudiante)
         if (dto.getRegistroEmocionalId() == null) {
             throw new RuntimeException("Debe especificar el ID del registro emocional");
         }
@@ -47,17 +49,33 @@ public class RecomendacionService implements IRecomendacionService {
                 .orElseThrow(() -> new RuntimeException("Registro emocional no encontrado"));
 
         recomendacion.setRegistroEmocional(registro);
+
+        // 2. Obtener al Psicólogo usando el DTO
+        // Valida que el ID venga en el DTO
+        if (dto.getUsuarioId() == null) {
+            throw new RuntimeException("Debe especificar el ID del psicólogo (usuarioId)");
+        }
+
+        // Busca al psicólogo
+        Usuario psicologo = usuarioRepository.findById(dto.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con ID: " + dto.getUsuarioId()));
+
+        // Asigna el psicólogo a la recomendación (Esto llena la columna usuario_id en BD)
+        recomendacion.setUsuario(psicologo);
+
+        // Guarda en la base de datos
         recomendacionRepository.save(recomendacion);
 
-        // 2️ Obtener al estudiante dueño del registro emocional
+        // 3. Notificaciones
         Usuario estudiante = registro.getUsuario();
 
         // 3️ Obtener al psicólogo autenticado (el que emite la recomendación)
-        String correoPsicologo = SecurityContextHolder.getContext().getAuthentication().getName();
-        Usuario psicologo = usuarioRepository.findByCorreo(correoPsicologo)
-                .orElseThrow(() -> new RuntimeException("Psicólogo no autenticado o no encontrado"));
+        //String correoPsicologo = SecurityContextHolder.getContext().getAuthentication().getName();
+        //Usuario psicologo = usuarioRepository.findByCorreo(correoPsicologo)
+          //      .orElseThrow(() -> new RuntimeException("Psicólogo no autenticado o no encontrado"));
 
-        // 4️ Crear notificación para el estudiante
+
+        // Notificación para el estudiante
         Notificacion notificacionEstudiante = new Notificacion();
         notificacionEstudiante.setUsuario(estudiante);
         notificacionEstudiante.setMensaje("El psicólogo " + psicologo.getNombre() +
@@ -68,7 +86,7 @@ public class RecomendacionService implements IRecomendacionService {
         notificacionEstudiante.setEstado("NUEVA");
         notificacionRepository.save(notificacionEstudiante);
 
-        // 5️ (Opcional) Crear también notificación para el psicólogo
+        // Notificación para el psicólogo
         Notificacion notificacionPsicologo = new Notificacion();
         notificacionPsicologo.setUsuario(psicologo);
         notificacionPsicologo.setMensaje("Has emitido una recomendación para el estudiante " +
@@ -120,6 +138,26 @@ public class RecomendacionService implements IRecomendacionService {
                     dto.setTipo(r.getTipo());
                     dto.setRegistroEmocionalId(r.getRegistroEmocional().getId());
                     dto.setUsuarioId(r.getRegistroEmocional().getUsuario().getId());
+                    return dto;
+                })
+                .toList();
+    }
+
+    // Este método buscará por PSICÓLOGO (el autor)
+    @Override
+    public List<RecomendacionDTO> listarPorPsicologo(Long psicologoId) {
+        return recomendacionRepository.findByUsuario_Id(psicologoId)
+                .stream()
+                .map(r -> {
+                    // Usamos el mismo mapeo que 'listarPorUsuario'
+                    RecomendacionDTO dto = new RecomendacionDTO();
+                    dto.setId(r.getId());
+                    dto.setMensaje(r.getMensaje());
+                    dto.setTipo(r.getTipo());
+                    dto.setRegistroEmocionalId(r.getRegistroEmocional().getId());
+                    dto.setUsuarioId(r.getRegistroEmocional().getUsuario().getId());
+                    // TODO: Aquí querrás el nombre del estudiante, no su ID
+                    // dto.setNombreEstudiante(r.getRegistroEmocional().getUsuario().getNombre());
                     return dto;
                 })
                 .toList();

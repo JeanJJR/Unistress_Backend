@@ -64,5 +64,10 @@ public class RecomendacionController {
         return ResponseEntity.ok(recomendacionService.listarPorUsuario(usuarioId));
     }
 
+    @GetMapping("/psicologo/{id}")
+    public ResponseEntity<List<RecomendacionDTO>> listarPorPsicologo(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(recomendacionService.listarPorPsicologo(id));
+    }
+
 
 }
