@@ -36,7 +36,6 @@ public class RegistroEmocionalController {
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> actualizar(@RequestBody RegistroEmocionalDTO dto) {
         registroService.insertar(dto);
         return ResponseEntity.ok("Registro emocional actualizado correctamente");

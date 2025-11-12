@@ -1,4 +1,6 @@
 package com.upc.unistress.servicios;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.upc.unistress.dtos.PerfilDTO;
 import com.upc.unistress.dtos.PerfilDetalleDTO;
 import com.upc.unistress.entidades.Perfil;
@@ -8,6 +10,7 @@ import com.upc.unistress.interfaces.IPerfilService;
 import com.upc.unistress.repositorios.PerfilRepository;
 import com.upc.unistress.repositorios.SuscripcionRepository;
 import com.upc.unistress.repositorios.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -36,6 +40,8 @@ public class PerfilService implements IPerfilService {
     private ModelMapper modelMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private Cloudinary  cloudinary;
 
 
 
@@ -80,6 +86,7 @@ public class PerfilService implements IPerfilService {
                 .map(perfil -> modelMapper.map(perfil, PerfilDTO.class))
                 .toList();
     }
+    /*
     @Override
     public void actualizarFoto(Long perfilId, String fotoUrl){
         Perfil perfil = perfilRepository.findById(perfilId)
@@ -87,6 +94,31 @@ public class PerfilService implements IPerfilService {
         perfil.setFotoUrl(fotoUrl);
         perfilRepository.save(perfil);
     }
+    */
+
+    @Override
+    @Transactional
+    public void actualizarFoto(int usuarioId, MultipartFile archivo) {
+        Perfil perfil = perfilRepository.findByUsuario_Id(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Perfil no encontrado para el Usuario ID " + usuarioId));
+
+        try {
+            Map uploadResult = cloudinary.uploader().upload(archivo.getBytes(), ObjectUtils.emptyMap());
+            String url = (String) uploadResult.get("secure_url");
+
+            System.out.println("✅ URL generada: " + url);
+            perfil.setFotoUrl(url);
+            perfilRepository.save(perfil);
+            System.out.println("✅ Perfil actualizado con nueva foto");
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error al subir la foto a Cloudinary", e);
+        }
+    }
+
+
+
+    /*
     // actualziar foto real
     @Override
     public void actualizarFoto(Long perfilId, MultipartFile archivo) {
@@ -112,7 +144,8 @@ public class PerfilService implements IPerfilService {
         } catch (IOException e) {
             throw new RuntimeException("Error al guardar la foto", e);
         }
-    }
+    }*/
+
     @Override
     public PerfilDetalleDTO obtenerPerfilPorUsuario(int usuarioId) {
         // Buscar el usuario
@@ -129,7 +162,7 @@ public class PerfilService implements IPerfilService {
         dto.setNombre(usuario.getNombre());
         dto.setApellidos(usuario.getApellidos());
         dto.setCorreo(usuario.getCorreo());
-        dto.setContraseña(usuario.getContraseña());
+        dto.setContrasena(usuario.getContrasena());
         dto.setTelefono(usuario.getTelefono());
 
         dto.setTipoPerfil(perfil.getTipoPerfil());
@@ -139,7 +172,7 @@ public class PerfilService implements IPerfilService {
         dto.setEstadoAcademico(perfil.getEstadoAcademico());
         dto.setEspecialidad(perfil.getEspecialidad());
         dto.setColegiatura(perfil.getColegiatura());
-        dto.setAñosExperiencia(perfil.getAñosExperiencia());
+        dto.setAnosExperiencia(perfil.getAnosExperiencia());
         dto.setFotoUrl(perfil.getFotoUrl());
 
 
@@ -171,8 +204,8 @@ public class PerfilService implements IPerfilService {
         }
 
         // Codificar contraseña si se envía
-        if (dto.getContraseña() != null && !dto.getContraseña().isBlank()) {
-            usuario.setContraseña(passwordEncoder.encode(dto.getContraseña()));
+        if (dto.getContrasena() != null && !dto.getContrasena().isBlank()) {
+            usuario.setContrasena(passwordEncoder.encode(dto.getContrasena()));
         }
 
         // Actualizar datos básicos
@@ -209,7 +242,7 @@ public class PerfilService implements IPerfilService {
         perfil.setEstadoAcademico(dto.getEstadoAcademico());
         perfil.setEspecialidad(dto.getEspecialidad());
         perfil.setColegiatura(dto.getColegiatura());
-        perfil.setAñosExperiencia(dto.getAñosExperiencia());
+        perfil.setAnosExperiencia(dto.getAnosExperiencia());
         perfil.setDescripcion(dto.getDescripcion());
 
         perfilRepository.save(perfil);

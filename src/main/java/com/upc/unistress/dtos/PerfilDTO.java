@@ -20,7 +20,7 @@ public class PerfilDTO {
     private String estadoAcademico;
     private String especialidad;
     private String colegiatura;
-    private Integer añosExperiencia;
+    private Integer anosExperiencia;
     private String fotoUrl;
     private String descripcion;
 

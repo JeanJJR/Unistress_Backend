@@ -27,10 +27,11 @@ public interface IPerfilService {
     // Listar perfiles por tipo (ESTUDIANTE, PSICOLOGO)
     List<PerfilDTO> listarPorTipoPerfil(String tipoPerfil);
     // Actualizar la foto de perfil (recibe la URL o ruta)
-    void actualizarFoto(Long perfilId, String fotoUrl);
+    //void actualizarFoto(Long perfilId, String fotoUrl);
 
     // Subir foto de perfil (archivo real)
-    void actualizarFoto(Long perfilId, MultipartFile archivo);
+    //void actualizarFoto(Long perfilId, MultipartFile archivo);
+    void actualizarFoto(int usuarioId, MultipartFile archivo);
 
     PerfilDetalleDTO obtenerPerfilPorUsuario(int usuarioId);
 

@@ -14,12 +14,12 @@ public class PsicologoDTO {
     private String nombre;
     private String apellidos;
     private String correo;
-    private String contraseña;
+    private String contrasena;
     private String telefono;
 
     // Datos de Perfil
     private String especialidad;
     private String colegiatura;
-    private Integer añosExperiencia;
+    private Integer anosExperiencia;
 
 }

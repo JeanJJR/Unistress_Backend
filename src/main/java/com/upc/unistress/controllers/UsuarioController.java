@@ -108,10 +108,15 @@ public class UsuarioController {
 
     // Listar estudiantes disponibles
     @GetMapping("/estudiantes")
-
     public ResponseEntity<List<UsuarioDTO>> listarEstudiantes() {
         return ResponseEntity.ok(usuarioService.listarPorRol("ROLE_ESTUDIANTE"));
     }
+    @GetMapping("/verificar-correo")
+    public ResponseEntity<Boolean> verificarCorreo(@RequestParam String correo) {
+        boolean existe = usuarioService.existsByCorreo(correo);
+        return ResponseEntity.ok(existe);
+    }
+
 
 
 }

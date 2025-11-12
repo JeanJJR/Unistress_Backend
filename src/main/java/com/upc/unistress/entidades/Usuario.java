@@ -30,7 +30,7 @@ public class Usuario implements Serializable {
     private String correo;
 
     @Column(nullable = false, length = 100)
-    private String contraseña;
+    private String contrasena;
 
     @Column(length = 20)
     private String telefono;
@@ -42,11 +42,11 @@ public class Usuario implements Serializable {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Perfil perfil;
 
-    public Usuario(String nombre, String apellidos, String correo, String contraseña, String telefono, LocalDate fechaRegistro, Rol rol) {
+    public Usuario(String nombre, String apellidos, String correo, String contrasena, String telefono, LocalDate fechaRegistro, Rol rol) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
         this.telefono = telefono;
         this.rol = rol;
     }
