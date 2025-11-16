@@ -140,10 +140,10 @@ public class SesionService implements ISesionService {
         SesionDTO dto = modelMapper.map(s, SesionDTO.class);
         dto.setPsicologoId(s.getPsicologo().getId());
         dto.setEstudianteId(s.getEstudiante().getId());
-        String nombrePsicologo=s.getPsicologo().getNombre() + " "+s.getPsicologo().getApellidos();
-        String nombreEstudiante=s.getEstudiante().getNombre() + " "+s.getEstudiante().getApellidos();
-        dto.setPsicologoNombreCompleto(nombrePsicologo);
-        dto.setEstudianteNombreCompleto(nombreEstudiante);
+        //String nombrePsicologo=s.getPsicologo().getNombre() + " "+s.getPsicologo().getApellidos();
+        //String nombreEstudiante=s.getEstudiante().getNombre() + " "+s.getEstudiante().getApellidos();
+        //dto.setPsicologoNombreCompleto(nombrePsicologo);
+        //dto.setEstudianteNombreCompleto(nombreEstudiante);
         return dto;
     }
 

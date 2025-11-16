@@ -95,7 +95,7 @@ public class DataInitializer {
         Perfil perfil = new Perfil(
                 usuario,
                 "ESTUDIANTE",
-                "Universidad Peruana de Ciencias Aplicadas",
+                "UPC",
                 "Ingeniería de Sistemas",
                 "7",
                 "Regular",

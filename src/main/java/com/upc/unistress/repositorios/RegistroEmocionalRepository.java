@@ -3,6 +3,7 @@ package com.upc.unistress.repositorios;
 import com.upc.unistress.entidades.RegistroEmocional;
 import com.upc.unistress.entidades.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -57,6 +58,9 @@ public interface RegistroEmocionalRepository extends JpaRepository<RegistroEmoci
     boolean existeRegistroHoy(@Param("usuarioId") Long usuarioId);
 
 
+    @Modifying
+    @Query("DELETE FROM RegistroEmocional re WHERE re.usuario.id = :usuarioId")
+    void deleteByUsuarioId(@Param("usuarioId") Long usuarioId);
 
 
 

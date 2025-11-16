@@ -8,15 +8,14 @@ import com.upc.unistress.entidades.Rol;
 import com.upc.unistress.entidades.Suscripcion;
 import com.upc.unistress.entidades.Usuario;
 import com.upc.unistress.interfaces.IUsuarioService;
-import com.upc.unistress.repositorios.PerfilRepository;
-import com.upc.unistress.repositorios.RolRepository;
-import com.upc.unistress.repositorios.SuscripcionRepository;
-import com.upc.unistress.repositorios.UsuarioRepository;
+import com.upc.unistress.repositorios.*;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.time.LocalDate;
@@ -39,6 +38,16 @@ public class UsuarioService implements IUsuarioService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private SuscripcionRepository suscripcionRepository;
+    @Autowired
+    private BancoPreguntaRepository bancoPreguntaRepository;
+    @Autowired
+    private NotificacionRepository notificacionRepository;
+    @Autowired
+    private TestEmocionalRepository testEmocionalRepository;
+    @Autowired
+    private RegistroEmocionalRepository registroEmocionalRepository;
+    @Autowired
+    private SesionRepository  sesionRepository;
 
 
     @Autowired
@@ -58,12 +67,26 @@ public class UsuarioService implements IUsuarioService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
-        if (usuarioRepository.existsById(id)) {
-            usuarioRepository.deleteById(id);
+        if (!usuarioRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
         }
+
+        // Eliminar relaciones manualmente
+        bancoPreguntaRepository.deleteByUsuarioId(id);
+        notificacionRepository.deleteByUsuarioId(id);
+        perfilRepository.deleteByUsuarioId(id);
+        registroEmocionalRepository.deleteByUsuarioId(id);
+        sesionRepository.deleteByUsuarioId(id);
+        suscripcionRepository.deleteByUsuarioId(id);
+        testEmocionalRepository.deleteByUsuarioId(id);
+
+        // Finalmente, eliminar el usuario
+        usuarioRepository.deleteById(id);
     }
+
 
     @Override
     public UsuarioDTO listId(Long id) {
@@ -113,7 +136,7 @@ public class UsuarioService implements IUsuarioService {
 
         Perfil perfil = new Perfil();
         perfil.setUsuario(usuarioGuardado);
-        perfil.setTipoPerfil("ROLE_ESTUDIANTE");
+        perfil.setTipoPerfil("ESTUDIANTE");
         perfil.setUniversidad(dto.getUniversidad());
         perfil.setCarrera(dto.getCarrera());
         perfil.setCiclo(dto.getCiclo());
@@ -158,7 +181,7 @@ public class UsuarioService implements IUsuarioService {
         // Crear Perfil
         Perfil perfil = new Perfil();
         perfil.setUsuario(usuarioGuardado);
-        perfil.setTipoPerfil("ROLE_PSICOLOGO");
+        perfil.setTipoPerfil("PSICOLOGO");
         perfil.setEspecialidad(psicologodto.getEspecialidad());
         perfil.setColegiatura(psicologodto.getColegiatura());
         perfil.setAnosExperiencia(psicologodto.getAnosExperiencia());

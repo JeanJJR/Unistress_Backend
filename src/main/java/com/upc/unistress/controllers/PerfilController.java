@@ -98,6 +98,7 @@ public class PerfilController {
     }
     */
     @PostMapping("/perfilusuario/{usuarioId}/foto")
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<?> actualizarFoto(
             @PathVariable int usuarioId,
             @RequestParam("archivo") MultipartFile archivo) {
@@ -110,6 +111,7 @@ public class PerfilController {
 
     // Obtener perfil detallado por usuario
     @GetMapping("/perfilusuario/{id}")
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<PerfilDetalleDTO> obtenerPerfilPorUsuario(@PathVariable int id) {
         PerfilDetalleDTO perfil = perfilService.obtenerPerfilPorUsuario(id);
         return ResponseEntity.ok(perfil);
@@ -117,7 +119,7 @@ public class PerfilController {
 
      // actualziar perfil
     @PutMapping("/perfilusuario/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<String> actualizarPerfil(
             @PathVariable int id,
             @RequestBody PerfilDetalleDTO dto) {

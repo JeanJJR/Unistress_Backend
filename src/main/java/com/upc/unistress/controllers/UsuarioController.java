@@ -84,7 +84,7 @@ public class UsuarioController {
 
     // registrar estudiante
     @PostMapping("/estudiante")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<String> registrarEstudiante(@RequestBody EstudianteDTO dto) {
         usuarioService.registrarEstudiante(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Estudiante registrado correctamente");
