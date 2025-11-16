@@ -11,6 +11,7 @@ public interface IRecomendacionService {
     RecomendacionDTO listId(Long id);
     List<RecomendacionDTO> listarPorTipo(String tipo);
     List<RecomendacionDTO> listarPorUsuario(Long usuarioId);
+    List<RecomendacionDTO> listarPorPsicologo(Long psicologoId);
 
 
 
