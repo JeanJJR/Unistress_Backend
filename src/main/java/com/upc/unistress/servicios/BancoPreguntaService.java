@@ -19,8 +19,6 @@ public class BancoPreguntaService implements IBancoPreguntaService {
     @Autowired
     private BancoPreguntaRepository repository;
 
-
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
