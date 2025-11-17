@@ -1,5 +1,6 @@
 package com.upc.unistress.servicios;
 
+import com.upc.unistress.dtos.PreguntaTestDTO;
 import com.upc.unistress.dtos.TestEmocionalDTO;
 import com.upc.unistress.entidades.BancoPregunta;
 import com.upc.unistress.entidades.PreguntaTest;
@@ -81,42 +82,33 @@ public class TestEmocionalService implements ITestEmocionalService {
     @Transactional
     @Override
     public TestEmocionalDTO resolver(TestEmocionalDTO dto) {
+
         TestEmocional test = new TestEmocional();
-        Usuario estudiante = new Usuario();
-        estudiante.setId(dto.getUsuarioId());
+
+        Usuario estudiante = usuarioRepository.findById(dto.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con ID: " + dto.getUsuarioId()));
         test.setUsuario(estudiante);
         test.setFecha(LocalDate.now());
 
-        // Selección aleatoria de preguntas
-        List<BancoPregunta> todasPreguntas = bancoRepo.findAll(); // <- usar instancia
-        Collections.shuffle(todasPreguntas);
-        int numeroPreguntas = 5; // cantidad de preguntas a tomar
-        List<BancoPregunta> preguntasSeleccionadas = todasPreguntas.stream()
-                .limit(numeroPreguntas)
-                .toList();
+        int puntajeTotal = 0;
+        List<PreguntaTest> preguntasTestEntidades = new java.util.ArrayList<>();
 
-        // Construcción de PreguntaTest
-        List<PreguntaTest> preguntas = preguntasSeleccionadas.stream().map(bp -> {
+        for (PreguntaTestDTO preguntaDTO : dto.getPreguntas()) {
             PreguntaTest pt = new PreguntaTest();
             pt.setTest(test);
-            pt.setPregunta(bp.getEnunciado());
-            pt.setPuntaje(0); // asignar puntaje según respuesta del usuario
-            return pt;
-        }).toList();
+            pt.setPregunta(preguntaDTO.getPregunta());
+            pt.setPuntaje(preguntaDTO.getPuntaje());
+            preguntasTestEntidades.add(pt);
+            puntajeTotal += preguntaDTO.getPuntaje();
+        }
 
-        int puntajeTotal = preguntas.stream().mapToInt(PreguntaTest::getPuntaje).sum();
-        test.setPreguntas(preguntas);
+        test.setPreguntas(preguntasTestEntidades);
         test.setPuntajeTotal(puntajeTotal);
         test.setNivelEstres(calcularNivelEstres(puntajeTotal));
+        TestEmocional testGuardado = repository.save(test);
 
-        repository.save(test);
-        return modelMapper.map(test, TestEmocionalDTO.class);
+        TestEmocionalDTO responseDTO = modelMapper.map(testGuardado, TestEmocionalDTO.class);
+        responseDTO.setPreguntas(dto.getPreguntas());
+        return responseDTO;
     }
-
-
-
-
-
-
-
 }
