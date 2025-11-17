@@ -20,6 +20,4 @@ public class SesionDTO {
     private LocalTime hora;
     private String mensaje;
     private String estado;
-    //private String psicologoNombreCompleto;
-    //private String estudianteNombreCompleto;
 }

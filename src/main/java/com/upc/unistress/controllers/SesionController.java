@@ -21,17 +21,15 @@ public class SesionController {
     @Autowired
     private ISesionService sesionService;
 
-    // 1. Agendar sesiN
+    // 1. Agendar sesión
     @PostMapping
-    public ResponseEntity<String> crear(@RequestBody SesionDTO dto) {
-        sesionService.crearSesion(dto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Sesión creada y notificación enviada al psicOlogo");
+    public ResponseEntity<SesionDTO> crear(@RequestBody SesionDTO dto) {
+        SesionDTO sesionCreada = sesionService.crearSesion(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(sesionCreada);
     }
 
     // 2. Listar todas las sesiones (admin)
     @GetMapping
-
     public ResponseEntity<List<SesionDTO>> listar() {
         return ResponseEntity.ok(sesionService.listar());
     }
@@ -50,15 +48,15 @@ public class SesionController {
 
     @GetMapping("/historial/estudiante/{id}")
     public ResponseEntity<List<SesionDTO>> historialPorEstudiante(@PathVariable Long id) {
-        return ResponseEntity.ok(sesionService.listarHistorialPorEstudiante(id));
+        List<SesionDTO> historial = sesionService.listarHistorialPorEstudiante(id);
+        return ResponseEntity.ok(historial);
     }
 
     // 5. Editar sesion
     @PutMapping("/{id}")
-
-    public ResponseEntity<String> editarSesion(@PathVariable Long id, @RequestBody SesionDTO dto) {
-        sesionService.editarSesion(id, dto);
-        return ResponseEntity.ok("Sesión actualizada correctamente");
+    public ResponseEntity<SesionDTO> editarSesion(@PathVariable Long id, @RequestBody SesionDTO dto) {
+        SesionDTO sesion = sesionService.editarSesion(id, dto);
+        return ResponseEntity.ok(sesion);
     }
 
     // 6. Cancelar sesión
@@ -89,15 +87,11 @@ public class SesionController {
 
      // si va
     // Cancelar sesión
-    @PutMapping("/cancelar/{id}")
-
-    public ResponseEntity<String> cancelarSesion(
-            @PathVariable Long id,
-            @RequestBody SesionDTO dto) {
+    @DeleteMapping ("/cancelar/{id}")
+    public ResponseEntity<String> cancelarSesion(@PathVariable Long id, @RequestBody SesionDTO dto) {
 
         sesionService.cancelarSesion(id, dto.getEstudianteId());
         return ResponseEntity.ok("Sesión cancelada correctamente");
     }
-
 
 }

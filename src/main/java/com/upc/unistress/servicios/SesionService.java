@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,7 +33,8 @@ public class SesionService implements ISesionService {
     private ModelMapper modelMapper;
 
     @Override
-    public void crearSesion(SesionDTO dto) {
+    @Transactional
+    public SesionDTO crearSesion(SesionDTO dto) {
         // Validar que el psicólogo existe
         Usuario psicologo = usuarioRepository.findById(dto.getPsicologoId())
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
@@ -76,9 +78,9 @@ public class SesionService implements ISesionService {
         notificacion.setFechaEnvio(LocalDate.now());
         notificacion.setEstado("PENDIENTE");
         notificacionRepository.save(notificacion);
+
+        return convertirADTO(sesion);
     }
-
-
 
 
     @Override
@@ -107,16 +109,20 @@ public class SesionService implements ISesionService {
     }
 
 
-
+    @Transactional
     @Override
-    public void editarSesion(Long id, SesionDTO dto) {
-        Sesion sesion = sesionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Sesion no encontrada"));
+    public SesionDTO editarSesion(Long id, SesionDTO dto) {
+        return sesionRepository.findById(id)
+                .map(sesionExistente -> {
 
-        sesion.setFecha(dto.getFecha());
-        sesion.setHora(dto.getHora());
+                    sesionExistente.setFecha(dto.getFecha());
+                    sesionExistente.setHora(dto.getHora());
 
-        sesionRepository.save(sesion);
+                    Sesion sesion = modelMapper.map(dto, Sesion.class);
+
+                    return modelMapper.map(sesionRepository.save(sesion), SesionDTO.class);
+                })
+                .orElseThrow(() -> new RuntimeException("Sesion no encontrada con ID: " + id));
     }
 
     @Override
@@ -140,10 +146,6 @@ public class SesionService implements ISesionService {
         SesionDTO dto = modelMapper.map(s, SesionDTO.class);
         dto.setPsicologoId(s.getPsicologo().getId());
         dto.setEstudianteId(s.getEstudiante().getId());
-        //String nombrePsicologo=s.getPsicologo().getNombre() + " "+s.getPsicologo().getApellidos();
-        //String nombreEstudiante=s.getEstudiante().getNombre() + " "+s.getEstudiante().getApellidos();
-        //dto.setPsicologoNombreCompleto(nombrePsicologo);
-        //dto.setEstudianteNombreCompleto(nombreEstudiante);
         return dto;
     }
 
@@ -159,6 +161,32 @@ public class SesionService implements ISesionService {
                 .map(this::convertirADTO)
                 .toList();
     }
+
+    // ... otros métodos
+
+    @Override
+    public void aceptarSesion(Long id) {
+        Sesion sesion = sesionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sesion no encontrada"));
+
+        if (!"PENDIENTE".equalsIgnoreCase(sesion.getEstado())) {
+            throw new RuntimeException("Solo se pueden aceptar sesiones pendientes.");
+        }
+
+        sesion.setEstado("ACEPTADA");
+        sesionRepository.save(sesion);
+
+        // Notificar al estudiante que su sesión fue aceptada
+        Notificacion notificacion = new Notificacion();
+        notificacion.setUsuario(sesion.getEstudiante());
+        notificacion.setMensaje("Tu sesión con el psicólogo " + sesion.getPsicologo().getNombre() + " ha sido aceptada.");
+        notificacion.setTipo("CITA_ACEPTADA");
+        notificacion.setFechaEnvio(LocalDate.now());
+        notificacion.setEstado("ENVIADA");
+        notificacionRepository.save(notificacion);
+    }
+
+
 
     @Override
     public void cancelarSesion(Long sesionId, Long estudianteId) {

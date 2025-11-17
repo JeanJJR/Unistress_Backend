@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ISesionService {
 
-    void crearSesion(SesionDTO dto);
+    SesionDTO crearSesion(SesionDTO dto);
 
     List<SesionDTO> listar();
 
@@ -15,7 +15,7 @@ public interface ISesionService {
 
     List<SesionDTO> listarHistorialPorEstudiante(Long estudianteId);
 
-    void editarSesion(Long id, SesionDTO dto);
+    SesionDTO editarSesion(Long id, SesionDTO dto);
 
     void aceptarSesion(Long id);
 
@@ -25,5 +25,5 @@ public interface ISesionService {
 
     List<SesionDTO> filtrarSesionesPorRangoAutenticado(LocalDate inicio, LocalDate fin);
 
-    void cancelarSesion(Long sesionId,Long estudianteId);
+    public void cancelarSesion(Long sesionId,Long estudianteId);
 }
