@@ -65,5 +65,12 @@ public class TestEmocionalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.resolver(dto));
     }
 
+    @GetMapping("/promedio/{usuarioId}")
+    public ResponseEntity<Double> obtenerPromedioPorUsuario(@PathVariable Long usuarioId) {
+        Double promedio = service.obtenerPromedioPorUsuario(usuarioId);
+        return ResponseEntity.ok(promedio);
+    }
+
+
 
 }

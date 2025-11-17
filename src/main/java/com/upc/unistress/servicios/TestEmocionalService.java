@@ -111,4 +111,13 @@ public class TestEmocionalService implements ITestEmocionalService {
         responseDTO.setPreguntas(dto.getPreguntas());
         return responseDTO;
     }
+    @Override
+    public Double obtenerPromedioPorUsuario(Long usuarioId) {
+        Double promedio = repository.obtenerPromedioPorUsuario(usuarioId);
+        if (promedio == null) {
+            throw new RuntimeException("No hay tests registrados para el usuario con ID: " + usuarioId);
+        }
+        return promedio;
+    }
+
 }
