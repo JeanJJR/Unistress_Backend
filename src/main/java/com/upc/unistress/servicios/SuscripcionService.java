@@ -49,6 +49,30 @@ public class SuscripcionService implements ISuscripcionService {
     }
 
     @Override
+    public SuscripcionDTO actualizar(Long id, SuscripcionDTO dto) {
+
+        Suscripcion existente = suscripcionRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Suscripción con ID " + id + " no encontrada"));
+
+        existente.setTipo(dto.getTipo());
+        existente.setEstado(dto.getEstado());
+        existente.setFechaInicio(dto.getFechaInicio());
+        existente.setFechaFin(dto.getFechaFin());
+
+        if (dto.getUsuarioId() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
+                    .orElseThrow(() ->
+                            new RuntimeException("Usuario con ID " + dto.getUsuarioId() + " no encontrado"));
+            existente.setUsuario(usuario);
+        }
+
+        Suscripcion actualizada = suscripcionRepository.save(existente);
+
+        return modelMapper.map(actualizada, SuscripcionDTO.class);
+    }
+
+    @Override
     public void eliminar(Long id) {
         if (suscripcionRepository.existsById(id)) {
             suscripcionRepository.deleteById(id);

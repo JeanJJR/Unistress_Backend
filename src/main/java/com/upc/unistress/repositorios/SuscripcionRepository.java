@@ -19,4 +19,5 @@ public interface SuscripcionRepository extends JpaRepository<Suscripcion, Long> 
     void deleteByUsuarioId(@Param("usuarioId") Long usuarioId);
 
 
+
 }

@@ -46,6 +46,7 @@ public class EstadisticaEmocionalService implements IEstadisticaEmocionalService
                 .toList();
     }
 
+    // PARA ESTUDIANTE
     @Override
     public List<EvolucionEmocionDTO> evolucionEmocionesEntreFechas(Long usuarioId, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
@@ -65,7 +66,7 @@ public class EstadisticaEmocionalService implements IEstadisticaEmocionalService
                 .toList();
     }
 
-
+        // PARA PSICLOGOS
     public List<TendenciaEmocionalDTO> obtenerTendencias(LocalDateTime inicio, LocalDateTime fin) {
         return registroRepository.obtenerTendenciasEmocionales(inicio, fin)
                 .stream()

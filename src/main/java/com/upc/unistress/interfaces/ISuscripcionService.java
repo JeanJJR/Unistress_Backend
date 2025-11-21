@@ -11,5 +11,6 @@ public interface ISuscripcionService {
     SuscripcionDTO listId(Long id);
     List<SuscripcionDTO> listarPorUsuario(Long usuarioId);
     List<SuscripcionDTO> listarActivas();
+    SuscripcionDTO actualizar(Long id, SuscripcionDTO dto);
 
 }

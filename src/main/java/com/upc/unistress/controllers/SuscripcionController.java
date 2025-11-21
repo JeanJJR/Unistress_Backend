@@ -56,7 +56,6 @@ public class SuscripcionController {
     }
 
     @PutMapping
-
     public ResponseEntity<String> editar(@RequestBody SuscripcionDTO dto) {
         suscripcionService.insertar(dto);
         return ResponseEntity.ok("Suscripción actualizada correctamente");
@@ -72,6 +71,14 @@ public class SuscripcionController {
 
     public ResponseEntity<List<SuscripcionDTO>> listarActivas() {
         return ResponseEntity.ok(suscripcionService.listarActivas());
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<SuscripcionDTO> actualizar(
+            @PathVariable Long id,
+            @RequestBody SuscripcionDTO dto) {
+
+        SuscripcionDTO actualizado = suscripcionService.actualizar(id, dto);
+        return ResponseEntity.ok(actualizado);
     }
 
 
