@@ -21,7 +21,7 @@ public class Recomendacion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(columnDefinition = "TEXT")
     private String mensaje;
 
     @Column(length = 50)

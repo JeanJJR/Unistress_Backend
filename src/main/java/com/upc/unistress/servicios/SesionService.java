@@ -51,6 +51,11 @@ public class SesionService implements ISesionService {
         if (!"ROLE_ESTUDIANTE".equalsIgnoreCase(estudiante.getRol().getTipoRol())) {
             throw new RuntimeException("El usuario con ID " + dto.getEstudianteId() + " no es un estudiante válido.");
         }
+        //  Validar que la fecha sea desde hoy + 3 días en adelante
+        LocalDate fechaMinima = LocalDate.now().plusDays(3);
+        if (dto.getFecha().isBefore(fechaMinima)) {
+            throw new RuntimeException("La fecha seleccionada debe ser a partir de " + fechaMinima);
+        }
 
         // Validar que el horario no esté ocupado
         boolean ocupado = sesionRepository.existsByPsicologoIdAndFechaAndHora(
@@ -65,7 +70,7 @@ public class SesionService implements ISesionService {
         sesion.setEstudiante(estudiante);
         sesion.setFecha(dto.getFecha());
         sesion.setHora(dto.getHora());
-        sesion.setMensaje("Sesión creada");
+        sesion.setMensaje(dto.getMensaje());
         sesion.setEstado("PENDIENTE");
 
         sesionRepository.save(sesion);
