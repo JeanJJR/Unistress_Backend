@@ -27,18 +27,13 @@ public class BancoPreguntaService implements IBancoPreguntaService {
 
     @Override
     public void insertar(BancoPreguntaDTO dto) {
-        // Obtener el email (username) del usuario autenticado
-        String correo = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        // Buscar al usuario autenticado
-        Usuario psicologo = usuarioRepository.findByCorreo(correo)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        // Validar que tenga rol de psicólogo
+        // Validar que el psicólogo existe
+        Usuario psicologo = usuarioRepository.findById(dto.getPsicologoId())
+                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
+        // Validar roles
         if (!"ROLE_PSICOLOGO".equalsIgnoreCase(psicologo.getRol().getTipoRol())) {
-            throw new RuntimeException("Solo los psicólogos pueden crear preguntas.");
+            throw new RuntimeException("El usuario con ID " + dto.getPsicologoId() + " no es un psicólogo válido.");
         }
-
         // Crear y guardar la pregunta
         BancoPregunta pregunta = new BancoPregunta();
         pregunta.setEnunciado(dto.getEnunciado());

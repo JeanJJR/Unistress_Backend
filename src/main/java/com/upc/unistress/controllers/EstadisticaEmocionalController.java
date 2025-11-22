@@ -49,7 +49,7 @@ public class EstadisticaEmocionalController {
 
     // Endpoint para psiclogo
     @GetMapping
-
+    @PreAuthorize("hasRole('PSICOLOGO')")
     public ResponseEntity<List<TendenciaEmocionalDTO>> verTendencias(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fin) {
