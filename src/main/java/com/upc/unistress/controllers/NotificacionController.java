@@ -27,7 +27,7 @@ public class NotificacionController {
     }
 
     @GetMapping("/usuario/{usuarioId}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<List<NotificacionDTO>> listarPorUsuario(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(notificacionService.listarPorUsuario(usuarioId));
     }
@@ -46,7 +46,7 @@ public class NotificacionController {
     }
 
     @PutMapping("/leer/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<String> marcarLeida(@PathVariable Long id) {
         notificacionService.marcarComoLeida(id);
         return ResponseEntity.ok("Notificación marcada como leída");

@@ -54,6 +54,7 @@ public class NotificacionService implements INotificacionService {
     }
 
     @Override
+
     public List<NotificacionDTO> listarPorUsuario(Long usuarioId) {
         return notificacionRepository.findByUsuario_Id(usuarioId)
                 .stream()
