@@ -65,7 +65,7 @@ public class SesionService implements ISesionService {
         sesion.setEstudiante(estudiante);
         sesion.setFecha(dto.getFecha());
         sesion.setHora(dto.getHora());
-        sesion.setMensaje("Sesión creada");
+        sesion.setMensaje(dto.getMensaje());
         sesion.setEstado("PENDIENTE");
 
         sesionRepository.save(sesion);

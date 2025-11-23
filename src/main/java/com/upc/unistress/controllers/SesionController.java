@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ public class SesionController {
     private ISesionService sesionService;
 
     // 1. Agendar sesión
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     @PostMapping
     public ResponseEntity<SesionDTO> crear(@RequestBody SesionDTO dto) {
         SesionDTO sesionCreada = sesionService.crearSesion(dto);
@@ -29,6 +31,7 @@ public class SesionController {
     }
 
     // 2. Listar todas las sesiones (admin)
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<SesionDTO>> listar() {
         return ResponseEntity.ok(sesionService.listar());
@@ -36,7 +39,7 @@ public class SesionController {
 
     // 3. Listar proximas sesiones de un estudiante en un rango de fechas
     @GetMapping("/estudiante/{id}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<List<SesionDTO>> listarPorEstudianteYRango(
             @PathVariable Long id,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
@@ -45,23 +48,24 @@ public class SesionController {
     }
 
     // 4. Listar historial de sesiones
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO','ESTUDIANTE')")
     @GetMapping("/historial/estudiante/{id}")
     public ResponseEntity<List<SesionDTO>> historialPorEstudiante(@PathVariable Long id) {
         List<SesionDTO> historial = sesionService.listarHistorialPorEstudiante(id);
         return ResponseEntity.ok(historial);
     }
 
-    // 5. Editar sesion
+    // 5. Editar sesion - ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<SesionDTO> editarSesion(@PathVariable Long id, @RequestBody SesionDTO dto) {
         SesionDTO sesion = sesionService.editarSesion(id, dto);
         return ResponseEntity.ok(sesion);
     }
 
-    // 6. Cancelar sesión
+    // 6. Eliminar sesión - ADMIN
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         sesionService.eliminar(id);
         return ResponseEntity.ok("Sesión eliminada correctamente");
@@ -69,24 +73,25 @@ public class SesionController {
 
 
 
-    //  Filtrar por rango de fechas
+    // 7. Filtrar por rango de fechas (ADMIN)
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/mis-sesiones/filtrar")
-
     public ResponseEntity<List<SesionDTO>> filtrarMisSesionesPorRango(
             @RequestParam("inicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
             @RequestParam("fin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fin) {
         return ResponseEntity.ok(sesionService.filtrarSesionesPorRangoAutenticado(inicio, fin));
     }
 
-    // aceptar sesión
+    // 8. Aceptar sesión
+    @PreAuthorize("hasRole('PSICOLOGO')")
     @PutMapping("/aceptar/{id}")
     public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
         sesionService.aceptarSesion(id);
         return ResponseEntity.ok("Sesión aceptada correctamente");
     }
 
-     // si va
-    // Cancelar sesión
+    //9.-Cancelar sesión
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     @DeleteMapping ("/cancelar/{id}")
     public ResponseEntity<String> cancelarSesion(@PathVariable Long id, @RequestBody SesionDTO dto) {
 
