@@ -18,4 +18,8 @@ public interface TestEmocionalRepository extends JpaRepository<TestEmocional, Lo
     @Query("DELETE FROM TestEmocional te WHERE te.usuario.id = :usuarioId")
     void deleteByUsuarioId(@Param("usuarioId") Long usuarioId);
 
+    @Query("SELECT AVG(t.puntajeTotal) FROM TestEmocional t WHERE t.usuario.id = :usuarioId")
+    Double obtenerPromedioPorUsuario(@Param("usuarioId") Long usuarioId);
+
+
 }

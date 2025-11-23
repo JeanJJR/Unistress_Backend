@@ -13,4 +13,7 @@ public interface ITestEmocionalService {
     List<TestEmocionalDTO> listarPorRangoFechas(LocalDate inicio, LocalDate fin);
 
     TestEmocionalDTO resolver(TestEmocionalDTO dto);
+
+    Double obtenerPromedioPorUsuario(Long usuarioId);
+
 }

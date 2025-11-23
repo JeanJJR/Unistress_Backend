@@ -25,7 +25,7 @@ public class BancoPreguntaController {
     }
 
     @PostMapping
-
+    @PreAuthorize("hasRole('PSICOLOGO')")
     public ResponseEntity<String> registrar(@RequestBody BancoPreguntaDTO dto) {
         service.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Pregunta registrada correctamente");

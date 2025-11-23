@@ -28,7 +28,7 @@ public class RegistroEmocional implements Serializable {
     @Column(name = "nivel", nullable = false)
     private Integer nivel; // 1-10
 
-    @Column(length = 500)
+    @Column(columnDefinition = "TEXT")
     private String descripcion;
 
     @Column(name = "fecha_registro", nullable = false)

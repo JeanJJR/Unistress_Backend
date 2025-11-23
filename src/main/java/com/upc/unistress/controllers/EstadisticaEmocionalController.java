@@ -8,8 +8,8 @@ import com.upc.unistress.interfaces.IEstadisticaEmocionalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class EstadisticaEmocionalController {
     }
     // Evolucion de emociones filtradas por rango de fechas
     @GetMapping("/evolucion-rango/{id}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<List<EvolucionEmocionDTO>> evolucionEntreFechasPorId(
             @PathVariable("id") Long usuarioId,
             @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
@@ -49,7 +49,7 @@ public class EstadisticaEmocionalController {
 
     // Endpoint para psiclogo
     @GetMapping
-
+    @PreAuthorize("hasRole('PSICOLOGO')")
     public ResponseEntity<List<TendenciaEmocionalDTO>> verTendencias(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fin) {

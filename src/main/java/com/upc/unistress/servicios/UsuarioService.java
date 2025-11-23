@@ -143,17 +143,19 @@ public class UsuarioService implements IUsuarioService {
         perfil.setEstadoAcademico(dto.getEstadoAcademico());
 
         perfilRepository.save(perfil);
-        // 3. Crear suscripción FREE por defecto
+
+// Crear suscripción vacía
         Suscripcion suscripcion = new Suscripcion();
         suscripcion.setUsuario(usuarioGuardado);
-        suscripcion.setTipo("FREE");
-        suscripcion.setEstado("ACTIVA");
 
-        LocalDate hoy = LocalDate.now();
-        suscripcion.setFechaInicio(hoy);
-        suscripcion.setFechaFin(hoy.plusMonths(1)); // por ejemplo, duración 1 mes
+// 👇 No seteamos nada más, todo queda en null
+        suscripcion.setTipo("PENDIENTE");
+        suscripcion.setEstado(null);
+        suscripcion.setFechaInicio(null);
+        suscripcion.setFechaFin(null);
 
         suscripcionRepository.save(suscripcion);
+
     }
 
     // registrar psicologo
