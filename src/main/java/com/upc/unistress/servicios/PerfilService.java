@@ -106,10 +106,10 @@ public class PerfilService implements IPerfilService {
             Map uploadResult = cloudinary.uploader().upload(archivo.getBytes(), ObjectUtils.emptyMap());
             String url = (String) uploadResult.get("secure_url");
 
-            System.out.println("✅ URL generada: " + url);
+            System.out.println(" URL generada: " + url);
             perfil.setFotoUrl(url);
             perfilRepository.save(perfil);
-            System.out.println("✅ Perfil actualizado con nueva foto");
+            System.out.println(" Perfil actualizado con nueva foto");
 
         } catch (IOException e) {
             throw new RuntimeException("Error al subir la foto a Cloudinary", e);

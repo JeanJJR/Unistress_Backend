@@ -17,7 +17,8 @@ public class DataInitializer {
                                    UsuarioRepository usuarioRepository,
                                    SuscripcionRepository suscripcionRepository,
                                    MetodoPagoRepository metodoPagoRepository,
-                                   PerfilRepository perfilRepository) {
+                                   PerfilRepository perfilRepository,
+                                   BancoPreguntaRepository bancoPreguntaRepository) {
         return args -> {
 
             // ====== CREAR ROLES ======
@@ -44,7 +45,6 @@ public class DataInitializer {
             admin.setTelefono("999999999");
             admin.setRol(rolAdmin);
             usuarioRepository.save(admin);
-            // No perfil ni suscripción
 
             Usuario carlos = new Usuario();
             carlos.setNombre("Carlos");
@@ -71,7 +71,23 @@ public class DataInitializer {
             crearMetodoPago("Tarjeta de crédito", metodoPagoRepository);
             crearMetodoPago("Yape", metodoPagoRepository);
 
-            System.out.println("Roles, Usuarios, Perfiles, Suscripciones y Métodos de Pago inicializados correctamente.");
+            // ====== CREAR PREGUNTAS DEL TEST EMOCIONAL ======
+            if (!"ROLE_PSICOLOGO".equalsIgnoreCase(lucia.getRol().getTipoRol())) {
+                throw new RuntimeException("El usuario Lucía no tiene rol de psicólogo.");
+            }
+
+            crearPregunta("Me he sentido motivado para realizar mis actividades diarias.", lucia, bancoPreguntaRepository);
+            crearPregunta("He tenido dificultades para concentrarme en mis estudios o trabajo.", lucia, bancoPreguntaRepository);
+            crearPregunta("Me he sentido con energía suficiente durante la semana.", lucia, bancoPreguntaRepository);
+            crearPregunta("He experimentado pensamientos negativos de manera frecuente.", lucia, bancoPreguntaRepository);
+            crearPregunta("He podido manejar adecuadamente situaciones de estrés.", lucia, bancoPreguntaRepository);
+            crearPregunta("He sentido apoyo emocional de las personas cercanas a mí.", lucia, bancoPreguntaRepository);
+            crearPregunta("Me he sentido ansioso o preocupado sin una razón clara.", lucia, bancoPreguntaRepository);
+            crearPregunta("He disfrutado de las actividades que normalmente me gustan.", lucia, bancoPreguntaRepository);
+            crearPregunta("He tenido problemas para dormir o descansar adecuadamente.", lucia, bancoPreguntaRepository);
+            crearPregunta("Me he sentido capaz de controlar mis emociones en situaciones difíciles.", lucia, bancoPreguntaRepository);
+
+            System.out.println("Roles, Usuarios, Perfiles, Suscripciones, Métodos de Pago y Banco de Preguntas inicializados correctamente.");
         };
     }
 
@@ -99,9 +115,9 @@ public class DataInitializer {
                 "Ingeniería de Sistemas",
                 "7",
                 "Regular",
-                null, // especialidad
-                null, // colegiatura
-                null, // añosExperiencia
+                null,
+                null,
+                null,
                 "https://res.cloudinary.com/dzgdttwjj/image/upload/v1762152783/m5swju7acyd2zr51sobc.jpg",
                 "Estudiante comprometido con su formación académica."
         );
@@ -123,5 +139,12 @@ public class DataInitializer {
                 "Psicóloga con experiencia en terapia cognitivo-conductual."
         );
         repo.save(perfil);
+    }
+
+    private void crearPregunta(String enunciado, Usuario psicologo, BancoPreguntaRepository repo) {
+        BancoPregunta pregunta = new BancoPregunta();
+        pregunta.setEnunciado(enunciado);
+        pregunta.setPsicologo(psicologo);
+        repo.save(pregunta);
     }
 }

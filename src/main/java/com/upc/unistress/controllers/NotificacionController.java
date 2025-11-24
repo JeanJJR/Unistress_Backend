@@ -21,7 +21,7 @@ public class NotificacionController {
     private INotificacionService notificacionService;
 
     @GetMapping
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<List<NotificacionDTO>> listar() {
         return ResponseEntity.ok(notificacionService.listar());
     }
@@ -33,13 +33,13 @@ public class NotificacionController {
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<NotificacionDTO> obtenerPorId(@PathVariable Long id) {
         return ResponseEntity.ok(notificacionService.listId(id));
     }
 
     @PostMapping
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<String> crear(@RequestBody NotificacionDTO dto) {
         notificacionService.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Notificación creada correctamente");
@@ -53,7 +53,7 @@ public class NotificacionController {
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         notificacionService.eliminar(id);
         return ResponseEntity.ok("Notificación eliminada correctamente");

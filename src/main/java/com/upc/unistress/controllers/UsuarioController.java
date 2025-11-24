@@ -31,7 +31,7 @@ public class UsuarioController {
     private ModelMapper modelMapper;
 // AMBOS USUARIOS
     @GetMapping
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<List<UsuarioDTO>> listar() {
         List<UsuarioDTO> usuarios = usuarioService.list()
                 .stream()
@@ -41,42 +41,42 @@ public class UsuarioController {
     }
 
     @PostMapping
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<String> registrar(@RequestBody UsuarioDTO dto) {
         usuarioService.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado correctamente");
     }
 
     @PutMapping
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<String> editar(@RequestBody UsuarioDTO dto) {
         usuarioService.insert(dto); // tambien se puede usar save para guardar o actualizar, pero recomentable es insert
         return ResponseEntity.ok("Usuario actualizado correctamente");
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<String> eliminar(@PathVariable("id") Long id) {
         usuarioService.delete(id);
         return ResponseEntity.ok("Usuario eliminado exitosamente");
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<UsuarioDTO> listarId(@PathVariable("id") Long id) {
         UsuarioDTO usuario = usuarioService.listId(id);
         return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/buscar")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<Optional<UsuarioDTO>> buscarPorCorreo(@RequestParam String correo) {
         Optional<UsuarioDTO> usuario = usuarioService.findByCorreo(correo);
         return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/por-rol")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<List<UsuarioDTO>> listarPorRol(@RequestParam String tipoRol) {
         List<UsuarioDTO> usuarios = usuarioService.listarPorRol(tipoRol);
         return ResponseEntity.ok(usuarios);
@@ -101,16 +101,19 @@ public class UsuarioController {
     // Nuevo endpoint para listar psicólogos disponibles
 
     @GetMapping("/psicologos")
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<List<UsuarioDTO>> listarPsicologos() {
         return ResponseEntity.ok(usuarioService.listarPorRol("ROLE_PSICOLOGO"));
     }
 
     // Listar estudiantes disponibles
     @GetMapping("/estudiantes")
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<List<UsuarioDTO>> listarEstudiantes() {
         return ResponseEntity.ok(usuarioService.listarPorRol("ROLE_ESTUDIANTE"));
     }
     @GetMapping("/verificar-correo")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Boolean> verificarCorreo(@RequestParam String correo) {
         boolean existe = usuarioService.existsByCorreo(correo);
         return ResponseEntity.ok(existe);

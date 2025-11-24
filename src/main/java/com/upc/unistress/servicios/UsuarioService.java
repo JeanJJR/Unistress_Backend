@@ -148,7 +148,7 @@ public class UsuarioService implements IUsuarioService {
         Suscripcion suscripcion = new Suscripcion();
         suscripcion.setUsuario(usuarioGuardado);
 
-// 👇 No seteamos nada más, todo queda en null
+//  No seteamos nada más, todo queda en null
         suscripcion.setTipo("PENDIENTE");
         suscripcion.setEstado(null);
         suscripcion.setFechaInicio(null);

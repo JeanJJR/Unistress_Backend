@@ -26,7 +26,7 @@ public class SuscripcionController {
     private ModelMapper modelMapper;
 
     @GetMapping
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<List<SuscripcionDTO>> listar() {
         List<SuscripcionDTO> suscripciones = suscripcionService.listar()
                 .stream()
@@ -36,43 +36,45 @@ public class SuscripcionController {
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<SuscripcionDTO> obtenerPorId(@PathVariable Long id) {
         SuscripcionDTO dto = suscripcionService.listId(id);
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<List<SuscripcionDTO>> listarPorUsuario(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(suscripcionService.listarPorUsuario(usuarioId));
     }
 
     @PostMapping
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> registrar(@RequestBody SuscripcionDTO dto) {
         suscripcionService.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Suscripción creada correctamente");
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> editar(@RequestBody SuscripcionDTO dto) {
         suscripcionService.insertar(dto);
         return ResponseEntity.ok("Suscripción actualizada correctamente");
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         suscripcionService.eliminar(id);
         return ResponseEntity.ok("Suscripción eliminada correctamente");
     }
     @GetMapping("/activas")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<List<SuscripcionDTO>> listarActivas() {
         return ResponseEntity.ok(suscripcionService.listarActivas());
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<SuscripcionDTO> actualizar(
             @PathVariable Long id,
             @RequestBody SuscripcionDTO dto) {

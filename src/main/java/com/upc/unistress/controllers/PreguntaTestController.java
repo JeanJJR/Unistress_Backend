@@ -27,27 +27,27 @@ public class PreguntaTestController {
     }
 
     @PostMapping
-
+    @PreAuthorize("hasAnyRole('ESTUDIANTE', 'ADMIN')")
     public ResponseEntity<String> registrar(@RequestBody PreguntaTestDTO dto) {
         service.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Pregunta registrada correctamente");
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         service.eliminar(id);
         return ResponseEntity.ok("Pregunta eliminada correctamente");
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<PreguntaTestDTO> listarId(@PathVariable Long id) {
         return ResponseEntity.ok(service.listId(id));
     }
 
     @GetMapping("/test/{testId}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ADMIN','ESTUDIANTE')")
     public ResponseEntity<List<PreguntaTestDTO>> listarPorTest(@PathVariable Long testId) {
         return ResponseEntity.ok(service.listarPorTest(testId));
     }

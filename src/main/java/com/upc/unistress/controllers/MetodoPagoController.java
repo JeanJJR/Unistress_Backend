@@ -26,7 +26,7 @@ public class MetodoPagoController {
     private ModelMapper modelMapper;
 
     @GetMapping
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<MetodoPagoDTO>> listar() {
         List<MetodoPagoDTO> metodos = metodoPagoService.listar()
                 .stream()
@@ -36,28 +36,28 @@ public class MetodoPagoController {
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MetodoPagoDTO> obtenerPorId(@PathVariable Long id) {
         MetodoPagoDTO dto = metodoPagoService.listId(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> registrar(@RequestBody MetodoPagoDTO dto) {
         metodoPagoService.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Método de pago registrado correctamente");
     }
 
     @PutMapping
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> editar(@RequestBody MetodoPagoDTO dto) {
         metodoPagoService.insertar(dto);
         return ResponseEntity.ok("Método de pago actualizado correctamente");
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         metodoPagoService.eliminar(id);
         return ResponseEntity.ok("Método de pago eliminado correctamente");

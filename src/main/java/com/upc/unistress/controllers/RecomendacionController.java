@@ -27,44 +27,45 @@ public class RecomendacionController {
     }
 
     @PostMapping
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<String> registrar(@RequestBody RecomendacionDTO dto) {
         recomendacionService.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Recomendación registrada correctamente");
     }
 
     @PutMapping
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<String> actualizar(@RequestBody RecomendacionDTO dto) {
         recomendacionService.insertar(dto);
         return ResponseEntity.ok("Recomendación actualizada correctamente");
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         recomendacionService.eliminar(id);
         return ResponseEntity.ok("Recomendación eliminada correctamente");
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<RecomendacionDTO> listarId(@PathVariable Long id) {
         return ResponseEntity.ok(recomendacionService.listId(id));
     }
 
     @GetMapping("/tipo/{tipo}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<List<RecomendacionDTO>> listarPorTipo(@PathVariable String tipo) {
         return ResponseEntity.ok(recomendacionService.listarPorTipo(tipo));
     }
     @GetMapping("/usuario/{usuarioId}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<List<RecomendacionDTO>> listarPorUsuario(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(recomendacionService.listarPorUsuario(usuarioId));
     }
 
     @GetMapping("/psicologo/{id}")
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<List<RecomendacionDTO>> listarPorPsicologo(@PathVariable("id") Long id) {
         return ResponseEntity.ok(recomendacionService.listarPorPsicologo(id));
     }

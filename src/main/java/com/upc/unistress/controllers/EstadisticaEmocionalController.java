@@ -25,14 +25,14 @@ public class EstadisticaEmocionalController {
 
     // Promedio de nivel emocional por emoción
     @GetMapping("/promedio/{usuarioId}")
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<EstadisticaEmocionDTO>> promedioPorEmocion(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(estadisticaService.promedioNivelPorEmocion(usuarioId));
     }
 
     // Evolución de emociones en el tiempo
     @GetMapping("/evolucion/{usuarioId}")
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<EvolucionEmocionDTO>> evolucion(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(estadisticaService.evolucionEmociones(usuarioId));
     }
@@ -57,7 +57,7 @@ public class EstadisticaEmocionalController {
     }
 
     @GetMapping("/estadistica_admin")
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EstadisticaDTO> obtenerEstadisticas() {
         return ResponseEntity.ok(estadisticaService.obtenerEstadisticas());
     }

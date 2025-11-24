@@ -26,7 +26,7 @@ public class RolController {
     private ModelMapper modelMapper;
 
     @GetMapping
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<RolDTO>> listar() {
         List<RolDTO> roles = rolService.listar()
                 .stream()
@@ -36,35 +36,35 @@ public class RolController {
     }
 
     @PostMapping
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> registrar(@RequestBody RolDTO dto) {
         rolService.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Rol registrado correctamente");
     }
 
     @PutMapping
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> editar(@RequestBody RolDTO dto) {
         rolService.insertar(dto);
         return ResponseEntity.ok("Rol actualizado correctamente");
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable("id") Long id) {
         rolService.eliminar(id);
         return ResponseEntity.ok("Rol eliminado exitosamente");
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RolDTO> listarId(@PathVariable("id") Long id) {
         RolDTO rol = rolService.listId(id);
         return ResponseEntity.ok(rol);
     }
 
     @GetMapping("/buscar")
-
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RolDTO> buscarPorNombre(@RequestParam String tipoRol) {
         RolDTO rol = rolService.findByTipoRol(tipoRol);
         return ResponseEntity.ok(rol);

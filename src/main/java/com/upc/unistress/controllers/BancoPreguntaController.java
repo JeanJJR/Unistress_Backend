@@ -20,6 +20,7 @@ public class BancoPreguntaController {
     private IBancoPreguntaService service;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<List<BancoPreguntaDTO>> listar() {
         return ResponseEntity.ok(service.listar());
     }
@@ -32,25 +33,27 @@ public class BancoPreguntaController {
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasRole('PSICOLOGO')")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         service.eliminar(id);
         return ResponseEntity.ok("Pregunta eliminada correctamente");
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasRole('PSICOLOGO')")
     public ResponseEntity<BancoPreguntaDTO> listarId(@PathVariable Long id) {
         return ResponseEntity.ok(service.listId(id));
     }
 
 
     @GetMapping("/psicologo/{psicologoId}")
+    @PreAuthorize("hasRole('PSICOLOGO')")
     public ResponseEntity<List<BancoPreguntaDTO>> listarPorPsicologo(@PathVariable Long psicologoId) {
         return ResponseEntity.ok(service.listarPorPsicologo(psicologoId));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('PSICOLOGO')")
     public ResponseEntity<String> actualizar(@PathVariable Long id, @RequestBody BancoPreguntaDTO dto) {
         service.actualizar(id, dto);
         return ResponseEntity.ok("Pregunta actualizada correctamente");

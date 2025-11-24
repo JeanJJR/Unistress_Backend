@@ -23,45 +23,46 @@ public class RegistroEmocionalController {
     private IRegistroEmocionalService registroService;
 
     @GetMapping
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<List<RegistroEmocionalDTO>> listar() {
         return ResponseEntity.ok(registroService.listar());
     }
 
     @PostMapping
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> registrar(@RequestBody RegistroEmocionalDTO dto) {
         registroService.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Registro emocional creado correctamente");
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> actualizar(@RequestBody RegistroEmocionalDTO dto) {
         registroService.insertar(dto);
         return ResponseEntity.ok("Registro emocional actualizado correctamente");
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         registroService.eliminar(id);
         return ResponseEntity.ok("Registro emocional eliminado correctamente");
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<RegistroEmocionalDTO> listarId(@PathVariable Long id) {
         return ResponseEntity.ok(registroService.listId(id));
     }
 
     @GetMapping("/usuario/{usuarioId}")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<List<RegistroEmocionalDTO>> listarPorUsuario(@PathVariable Long usuarioId) {
         return ResponseEntity.ok(registroService.listarPorUsuario(usuarioId));
     }
 
     @GetMapping("/rango-fechas")
-
+    @PreAuthorize("hasAnyRole('PSICOLOGO', 'ESTUDIANTE')")
     public ResponseEntity<List<RegistroEmocionalDTO>> listarPorFechas(@RequestParam LocalDateTime inicio,
                                                                       @RequestParam LocalDateTime fin) {
         return ResponseEntity.ok(registroService.listarPorRangoFechas(inicio, fin));

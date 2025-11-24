@@ -26,6 +26,7 @@ public class PagoController {
     private ModelMapper modelMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<List<PagoDTO>> listar() {
         List<PagoDTO> pagos = pagoService.listar()
                 .stream()
@@ -35,34 +36,34 @@ public class PagoController {
     }
 
     @GetMapping("/{id}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<PagoDTO> obtenerPorId(@PathVariable Long id) {
         PagoDTO dto = pagoService.listId(id);
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/suscripcion/{suscripcionId}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<List<PagoDTO>> listarPorSuscripcion(@PathVariable Long suscripcionId) {
         return ResponseEntity.ok(pagoService.listarPorSuscripcion(suscripcionId));
     }
 
     @PostMapping
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> registrar(@RequestBody PagoDTO dto) {
         pagoService.insertar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Pago registrado correctamente");
     }
 
     @PutMapping
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> editar(@RequestBody PagoDTO dto) {
         pagoService.insertar(dto);
         return ResponseEntity.ok("Pago actualizado correctamente");
     }
 
     @DeleteMapping("/{id}")
-
+    @PreAuthorize("hasRole('ESTUDIANTE')")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         pagoService.eliminar(id);
         return ResponseEntity.ok("Pago eliminado correctamente");
