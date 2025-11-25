@@ -138,26 +138,22 @@ public class RecomendacionService implements IRecomendacionService {
                 .toList();
     }
 
-    // Este método buscará por PSICÓLOGO (el autor)
     @Override
     public List<RecomendacionDTO> listarPorPsicologo(Long psicologoId) {
         return recomendacionRepository.findByUsuario_Id(psicologoId)
                 .stream()
                 .map(r -> {
-                    // Usamos el mismo mapeo que 'listarPorUsuario'
                     RecomendacionDTO dto = new RecomendacionDTO();
                     dto.setId(r.getId());
                     dto.setMensaje(r.getMensaje());
                     dto.setTipo(r.getTipo());
                     dto.setRegistroEmocionalId(r.getRegistroEmocional().getId());
-                    dto.setUsuarioId(r.getRegistroEmocional().getUsuario().getId());
-                    // TODO: Aquí querrás el nombre del estudiante, no su ID
-                    // dto.setNombreEstudiante(r.getRegistroEmocional().getUsuario().getNombre());
+                    Usuario estudiante = r.getRegistroEmocional().getUsuario();
+                    dto.setUsuarioId(estudiante.getId());
+                    dto.setNombreEstudiante(estudiante.getNombre() + " " + estudiante.getApellidos());
+
                     return dto;
                 })
                 .toList();
     }
-
-
-
 }

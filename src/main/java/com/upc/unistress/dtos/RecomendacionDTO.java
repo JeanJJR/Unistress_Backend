@@ -12,4 +12,5 @@ public class RecomendacionDTO {
     private String tipo;
     private Long registroEmocionalId; // Para asociar si aplica
     private Long usuarioId;
+    private String nombreEstudiante;
 }
