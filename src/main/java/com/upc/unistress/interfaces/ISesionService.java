@@ -15,13 +15,10 @@ public interface ISesionService {
 
     List<SesionDTO> listarHistorialPorEstudiante(Long estudianteId);
 
-    SesionDTO editarSesion(Long id, SesionDTO dto);
 
     void aceptarSesion(Long id);
 
     void eliminar(Long id);
-
-    List<SesionDTO> listarPorFecha(LocalDate fecha);
 
     List<SesionDTO> filtrarSesionesPorRangoAutenticado(LocalDate inicio, LocalDate fin);
 

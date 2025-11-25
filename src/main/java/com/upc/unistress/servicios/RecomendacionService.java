@@ -69,11 +69,6 @@ public class RecomendacionService implements IRecomendacionService {
         // 3. Notificaciones
         Usuario estudiante = registro.getUsuario();
 
-        // 3️ Obtener al psicólogo autenticado (el que emite la recomendación)
-        //String correoPsicologo = SecurityContextHolder.getContext().getAuthentication().getName();
-        //Usuario psicologo = usuarioRepository.findByCorreo(correoPsicologo)
-          //      .orElseThrow(() -> new RuntimeException("Psicólogo no autenticado o no encontrado"));
-
 
         // Notificación para el estudiante
         Notificacion notificacionEstudiante = new Notificacion();

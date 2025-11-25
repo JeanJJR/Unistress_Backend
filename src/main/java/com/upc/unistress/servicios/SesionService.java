@@ -113,23 +113,6 @@ public class SesionService implements ISesionService {
                 .toList();
     }
 
-
-    @Transactional
-    @Override
-    public SesionDTO editarSesion(Long id, SesionDTO dto) {
-        return sesionRepository.findById(id)
-                .map(sesionExistente -> {
-
-                    sesionExistente.setFecha(dto.getFecha());
-                    sesionExistente.setHora(dto.getHora());
-
-                    Sesion sesion = modelMapper.map(dto, Sesion.class);
-
-                    return modelMapper.map(sesionRepository.save(sesion), SesionDTO.class);
-                })
-                .orElseThrow(() -> new RuntimeException("Sesion no encontrada con ID: " + id));
-    }
-
     @Override
     public void eliminar(Long id) {
         if (sesionRepository.existsById(id)) {
@@ -139,13 +122,6 @@ public class SesionService implements ISesionService {
         }
     }
 
-    @Override
-    public List<SesionDTO> listarPorFecha(LocalDate fecha) {
-        return sesionRepository.findByFecha(fecha)
-                .stream()
-                .map(this::convertirADTO)
-                .toList();
-    }
 
     private SesionDTO convertirADTO(Sesion s) {
         SesionDTO dto = modelMapper.map(s, SesionDTO.class);

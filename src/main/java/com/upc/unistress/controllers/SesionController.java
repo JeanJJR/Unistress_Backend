@@ -55,25 +55,17 @@ public class SesionController {
         return ResponseEntity.ok(historial);
     }
 
-    // 5. Editar sesion - ADMIN
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<SesionDTO> editarSesion(@PathVariable Long id, @RequestBody SesionDTO dto) {
-        SesionDTO sesion = sesionService.editarSesion(id, dto);
-        return ResponseEntity.ok(sesion);
-    }
 
-    // 6. Eliminar sesión - ADMIN
+    // 5. Eliminar sesión - ADMIN
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Long id) {
+    public void eliminar(@PathVariable Long id) {
         sesionService.eliminar(id);
-        return ResponseEntity.ok("Sesión eliminada correctamente");
     }
 
 
 
-    // 7. Filtrar por rango de fechas (ADMIN)
+    // 6. Filtrar por rango de fechas (ADMIN)
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/mis-sesiones/filtrar")
     public ResponseEntity<List<SesionDTO>> filtrarMisSesionesPorRango(
@@ -82,7 +74,7 @@ public class SesionController {
         return ResponseEntity.ok(sesionService.filtrarSesionesPorRangoAutenticado(inicio, fin));
     }
 
-    // 8. Aceptar sesión
+    // 7. Aceptar sesión
     @PreAuthorize("hasRole('PSICOLOGO')")
     @PutMapping("/aceptar/{id}")
     public ResponseEntity<String> aceptarSesion(@PathVariable Long id) {
@@ -90,7 +82,7 @@ public class SesionController {
         return ResponseEntity.ok("Sesión aceptada correctamente");
     }
 
-    //9.-Cancelar sesión
+    //8.-Cancelar sesión
     @PreAuthorize("hasRole('ESTUDIANTE')")
     @DeleteMapping ("/cancelar/{id}")
     public ResponseEntity<String> cancelarSesion(@PathVariable Long id, @RequestBody SesionDTO dto) {
