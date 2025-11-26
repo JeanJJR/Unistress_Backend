@@ -3,7 +3,6 @@ package com.upc.unistress.controllers;
 import com.upc.unistress.dtos.EstudianteDTO;
 import com.upc.unistress.dtos.PsicologoDTO;
 import com.upc.unistress.dtos.UsuarioDTO;
-import com.upc.unistress.entidades.Usuario;
 import com.upc.unistress.interfaces.IUsuarioService;
 import org.modelmapper.ModelMapper;
 import org.springdoc.core.utils.PropertyResolverUtils;
@@ -119,6 +118,13 @@ public class UsuarioController {
         return ResponseEntity.ok(existe);
     }
 
-
-
+    @GetMapping("/estudiantes/buscar/{termino}")
+    @PreAuthorize("hasRole('PSICOLOGO')")
+    public ResponseEntity<List<UsuarioDTO>> buscarEstudiantes(@RequestParam String termino) {
+        List<UsuarioDTO> resultados = usuarioService.buscarEstudiantesPorNombre(termino);
+        return ResponseEntity.ok(resultados);
+    }
 }
+
+
+

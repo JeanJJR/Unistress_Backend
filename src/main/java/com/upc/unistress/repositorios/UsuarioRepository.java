@@ -20,5 +20,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query("SELECT u FROM Usuario u WHERE u.rol.tipoRol = 'ROLE_PSICOLOGO'")
     List<Usuario> findPsicologosDisponibles();
 
+    @Query("SELECT u FROM Usuario u WHERE u.rol.tipoRol = 'ROLE_ESTUDIANTE' AND " +
+            "(LOWER(u.nombre) LIKE LOWER(CONCAT('%', :termino, '%')) OR " +
+            "LOWER(u.apellidos) LIKE LOWER(CONCAT('%', :termino, '%')) OR " +
+            "LOWER(CONCAT(u.nombre, ' ', u.apellidos)) LIKE LOWER(CONCAT('%', :termino, '%')))")
+    List<Usuario> buscarEstudiantesPorNombre(String termino);
+
 
 }

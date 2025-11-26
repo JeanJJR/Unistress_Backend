@@ -38,4 +38,6 @@ public interface IUsuarioService {
     void registrarPsicologo(PsicologoDTO psicologodto);
 
     List<UsuarioDTO> listarPsicologosDisponibles();
+
+    List<UsuarioDTO> buscarEstudiantesPorNombre(String termino);
 }

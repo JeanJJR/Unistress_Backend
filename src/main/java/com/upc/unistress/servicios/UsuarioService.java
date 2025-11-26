@@ -199,4 +199,12 @@ public class UsuarioService implements IUsuarioService {
                 .map(u -> modelMapper.map(u, UsuarioDTO.class))
                 .toList();
     }
+
+    @Override
+    public List<UsuarioDTO> buscarEstudiantesPorNombre(String termino) {
+        return usuarioRepository.buscarEstudiantesPorNombre(termino)
+                .stream()
+                .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+                .toList();
+    }
 }
