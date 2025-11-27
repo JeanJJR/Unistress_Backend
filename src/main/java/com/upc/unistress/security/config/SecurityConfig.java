@@ -2,6 +2,7 @@ package com.upc.unistress.security.config;
 
 import com.upc.unistress.security.filters.JwtRequestFilter;
 import com.upc.unistress.security.services.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Value; // <--- IMPORTANTE: Nueva importación
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,10 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
 
+    // --- CAMBIO 1: Inyectamos la variable desde application.properties ---
+    @Value("${ip.frontend}")
+    private String frontendUrl;
+
     public SecurityConfig(CustomUserDetailsService userDetailsService, JwtRequestFilter jwtRequestFilter) {
         this.userDetailsService = userDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
@@ -45,7 +50,10 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:4200"));
+
+                    // --- CAMBIO 2: Agregamos la URL inyectada a la lista de permitidos ---
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:4200", frontendUrl));
+
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("*"));
                     corsConfig.setExposedHeaders(List.of("Authorization"));
@@ -63,5 +71,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }
